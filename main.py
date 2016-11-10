@@ -6,7 +6,7 @@ import MySQLdb
 # in a complex world — basic and digest authentication, redirections, cookies and more.
 import urllib2
 
-# Import BeautifulSoup for parsin html data
+# Import BeautifulSoup for parse html data
 from bs4 import BeautifulSoup
 import sys
 
@@ -22,7 +22,7 @@ headers = {'User-Agent': 'GoogleBot'}
 
 def run(link):
     """
-    Iterate the next 11 pages to get the links and call the function to
+    Iterate the next 10 pages to get the links and call the function to
     get the data child
 
     :param link:
