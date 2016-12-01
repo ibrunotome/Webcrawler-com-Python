@@ -2,12 +2,17 @@
 
 # Module for work with mysql database
 import MySQLdb
+
 # The urllib2 module defines functions and classes which help in opening URLs (mostly HTTP)
-# in a complex world — basic and digest authentication, redirections, cookies and more.
+# in a complex world a basic and digest authentication, redirections, cookies and more.
 import urllib2
 
 # Import BeautifulSoup for parse html data
 from bs4 import BeautifulSoup
+
+# Import time to know time spent
+import time
+
 import sys
 
 reload(sys)
@@ -20,7 +25,7 @@ link_page = link_base + '/secretarias/smads/estouaqui/pessoas/todos/page:'
 headers = {'User-Agent': 'GoogleBot'}
 
 
-def run(link):
+def run_request(link):
     """
     Iterate the next 10 pages to get the links and call the function to
     get the data child
@@ -28,10 +33,13 @@ def run(link):
     :param link:
     :return:
     """
+
+    global link_page
+
     if link is None:
         return
 
-    for i in range(1, 11):
+    for i in xrange(1, 11):
         soup = get_html(link_page + str(i))
 
         if soup is None:
@@ -60,6 +68,7 @@ def get_data_child(link):
     :param link:
     :return:
     """
+
     soup = get_html(link)
 
     if soup is None:
@@ -108,6 +117,7 @@ def connect_db():
     Settings for connect to the database
     :return:
     """
+
     return MySQLdb.connect(host='localhost', user='root', passwd='', db='webcrawler_python')
 
 
@@ -117,9 +127,13 @@ def get_html(link):
     :param link:
     :return:
     """
+
     request = urllib2.Request(link, headers=headers)
     return BeautifulSoup(urllib2.urlopen(request), 'html.parser')
 
 
 if __name__ == '__main__':
-    run(link_base + '/secretarias/smads/estouaqui/pessoas/todos')
+    begin = time.time()
+    run_request(link_base + '/secretarias/smads/estouaqui/pessoas/todos')
+    end = time.time()
+    print '\nTotal: ', (end - begin)
